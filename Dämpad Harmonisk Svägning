@@ -1,0 +1,39 @@
+#Dampad_Fysik3
+
+import math
+
+#Värden
+
+Massa = 0.25
+Delta_t = 0.05
+Hastighet1 = 0 
+Hastighet2 = 0
+Acceleration = 0
+Position1 = 10
+Position2 = 0
+Gravitation = 9.82
+Fjäderkonstanten = 5
+
+Tid = 0
+Dämpningskonstant = 0.1
+n = 0
+#Funktioner - skapa ett sätt att veta Acceleration vid tid 1 och sedan använd det för veta tid 2 och så vidare genom Acceleration vid tid 1
+
+#Steg 1
+while(True):
+    n += 1 
+    Kraft = -1*Fjäderkonstanten*Position1 - Dämpningskonstant*Hastighet1
+    Acceleration = Kraft/Massa
+    Hastighet2 = Hastighet1 + Acceleration*Delta_t
+    Position2 = Position1 + Hastighet2*Delta_t
+    Tid += 0.05
+    print(Hastighet1)
+    #print(Tid)
+    print(",")
+#Steg 2
+
+    Position1 = Position2
+    Hastighet1 = Hastighet2
+    if(n == 600):    
+        break
+print(n)
