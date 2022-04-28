@@ -1,0 +1,42 @@
+Massan = 0.5
+Diametern = 0.01
+Dämpningskonstanten = 90*Diametern/2
+Hastighet1 = 1000
+Hastighet2 = 0
+Densitet = 1420 
+Gravitations_Kraften = Massan*9.82
+Delta_t = 0.05
+position1 = 0
+position2 = 0
+acceleration1 = 9.82
+acceleration2 = 0
+tid = 0 
+n = 0
+Volym = 3.14159*(4/3)*(0.005*0.005*0.005)
+#Motståndskraft = Hastighet[n]*Dämpningskonstanten
+#Kraftlyft = Densitet*Hastighet[n]*9.82
+#Kraftresultat = Gravitations_Kraften - Kraftlyft - Motståndskraft
+
+while(True):
+    n += 1
+    #Steg 1
+    Motståndskraft = Hastighet1*Dämpningskonstanten
+    Kraftlyft = Densitet*Volym*9.82
+    Kraftresultat = Gravitations_Kraften - Kraftlyft - Motståndskraft
+    acceleration1 = Kraftresultat/Massan
+    
+    #Steg 2
+    acceleration1 = Kraftresultat/Massan 
+    Hastighet2 = Hastighet1 + acceleration1*Delta_t
+    position2 = position1 + Hastighet2*Delta_t
+    acceleration2 = acceleration1 + Kraftresultat/Massan
+    tid = tid + Delta_t
+    print(Hastighet1)
+    #print(tid)
+    print(",")
+    #Steg 3
+    Hastighet1 = Hastighet2
+    acceleration1 = acceleration2
+    position1 = position2
+    if(n == 300):
+        break
