@@ -3,41 +3,51 @@
 import math
 import numpy as np
 #Värden
-
-Massa = 1
+Vinkeln1 = 35
+Vinkeln2 = 0
+Massa = 0.04593
 Position1 = 0
 Position2 = 0
 Px = 0
 Py = 0
-Hastighet1 = 10.0
+Hastighet1 = 5
 Hastighet2 = 0
-Hx = 0
-Hy = 0 
+Hx1 = Hastighet1*math.cos(Vinkeln1)
+Hx2 = 0
+Hy1 = Hastighet1*math.sin(Vinkeln1) 
+Hy2 = 0
 Vinkelhastighet1 = 0
 VinkelHastighet2 = 0
 Acceleration = 0
-Area = 0
-Densitet = 0
-Diametern = 1
+AccelerationY = 0
+AccelerationX = 0
+Densitet = 1.225
+Diametern = 0.04267
 Radie = Diametern/2
 Delta_t = 0.01
-Vinkeln1 = 35
-Vinkeln2 = 0
+Area = 4*math.pi*Radie*Radie*Radie
 Fg = Massa*9.82
 Fd = 0
 Fm = 0
 Cd = 0.5
 kd = 0.5*Cd*Densitet*Area
+lufttryck = 101.325 
 n = 0
 #Funktioner
 while(True):
     n += 1
     Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5
-    Fd = kd*(Hastighet1*Hastighet1) 
+    Fd = kd*(Hastighet1*Hastighet1) + lufttryck 
     Fm = 2*Densitet*Vinkelhastighet1*Hastighet1*math.pi*Radie*Area
-    Kraft = Fg + Fd + Fm
-    Acceleration = Kraft/Massa
+    KraftY = -Fg-Fd*math.cos(Vinkeln1)-Fm
+    KraftX = -Fd*math.sin(Vinkeln1)
+    AccelerationY = KraftY/Massa
+    AccelerationX = KraftX/Massa
+    Hx2 = Hx1 + AccelerationX*Delta_t 
+    Hy2 = Hy1 + AccelerationY*Delta_t
+    Acceleration = math.sqrt(AccelerationY*AccelerationY + AccelerationX*AccelerationX)
     Hastighet2 = Hastighet1 + Acceleration*Delta_t
+    print(Hastighet2) 
     Vinkelhastighet2 = Vinkelhastighet1 + Hastighet1*(1/Radie)
     Position2 = Position1 + Hastighet2*Delta_t
     Vinkeln2 = np.arctan(Hastighet2*math.cos(Vinkeln1)/(Hastighet2*math.sin(Vinkeln1)))
@@ -49,6 +59,6 @@ while(True):
     if(n == 300):
         break
 print("Dope")
-print(math.sin(math.pi))
+print(Hastighet1)
 print(Vinkeln2)
 
