@@ -1,0 +1,54 @@
+#Moduler
+
+import math
+import numpy as np
+#Värden
+
+Massa = 1
+Position1 = 0
+Position2 = 0
+Px = 0
+Py = 0
+Hastighet1 = 10.0
+Hastighet2 = 0
+Hx = 0
+Hy = 0 
+Vinkelhastighet1 = 0
+VinkelHastighet2 = 0
+Acceleration = 0
+Area = 0
+Densitet = 0
+Diametern = 1
+Radie = Diametern/2
+Delta_t = 0.01
+Vinkeln1 = 35
+Vinkeln2 = 0
+Fg = Massa*9.82
+Fd = 0
+Fm = 0
+Cd = 0.5
+kd = 0.5*Cd*Densitet*Area
+n = 0
+#Funktioner
+while(True):
+    n += 1
+    Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5
+    Fd = kd*(Hastighet1*Hastighet1) 
+    Fm = 2*Densitet*Vinkelhastighet1*Hastighet1*math.pi*Radie*Area
+    Kraft = Fg + Fd + Fm
+    Acceleration = Kraft/Massa
+    Hastighet2 = Hastighet1 + Acceleration*Delta_t
+    Vinkelhastighet2 = Vinkelhastighet1 + Hastighet1*(1/Radie)
+    Position2 = Position1 + Hastighet2*Delta_t
+    Vinkeln2 = np.arctan(Hastighet2*math.cos(Vinkeln1)/(Hastighet2*math.sin(Vinkeln1)))
+# Förberedelser
+    Hastighet1 = Hastighet2
+    Position1 = Position2
+    Vinkeln2 = Vinkeln1
+    Vinkelhastighet1 = Vinkelhastighet2
+    if(n == 300):
+        break
+print("Dope")
+print(math.sin(math.pi))
+print(Vinkeln2)
+
