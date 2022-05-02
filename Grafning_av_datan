@@ -1,0 +1,9 @@
+# importing two required module 
+import numpy as np
+import matplotlib.pyplot as plt
+# Creating a numpy array
+X = np.array([])
+Y = np.array([])
+# Plotting point using sactter method
+plt.scatter(X,Y)
+plt.show()
