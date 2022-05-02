@@ -2,8 +2,10 @@
 
 import math
 import numpy as np
+
 #Värden
-Vinkeln1 = 35
+
+Vinkeln1 = 1
 Vinkeln2 = 0
 Massa = 0.04593
 Position1 = 0
@@ -11,12 +13,12 @@ Position2 = 0
 Px = 0
 Py = 0
 Hastighet1 = 5
-Hastighet2 = 0
+Hastighet2 = 5
 Hx1 = Hastighet1*math.cos(Vinkeln1)
 Hx2 = 0
 Hy1 = Hastighet1*math.sin(Vinkeln1) 
 Hy2 = 0
-Vinkelhastighet1 = 0
+VinkelHastighet1 = 0
 VinkelHastighet2 = 0
 Acceleration = 0
 AccelerationY = 0
@@ -24,41 +26,48 @@ AccelerationX = 0
 Densitet = 1.225
 Diametern = 0.04267
 Radie = Diametern/2
-Delta_t = 0.01
-Area = 4*math.pi*Radie*Radie*Radie
+Delta_t = 0.1
+Area = 4*math.pi*Radie*Radie
 Fg = Massa*9.82
 Fd = 0
 Fm = 0
 Cd = 0.5
 kd = 0.5*Cd*Densitet*Area
-lufttryck = 101.325 
 n = 0
+Statiska_trycket = 0
+
 #Funktioner
+
 while(True):
     n += 1
-    Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5
-    Fd = kd*(Hastighet1*Hastighet1) + lufttryck 
-    Fm = 2*Densitet*Vinkelhastighet1*Hastighet1*math.pi*Radie*Area
-    KraftY = -Fg-Fd*math.cos(Vinkeln1)-Fm
-    KraftX = -Fd*math.sin(Vinkeln1)
+    Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5 + Statiska_trycket
+    Fd = kd*(Hastighet1*Hastighet1)  
+   
+    KraftY = Fg*math.sin(Vinkeln1)+Fd*math.sin(Vinkeln1)+Fm*math.sin(Vinkeln1)
+    KraftX = Fd*math.cos(Vinkeln1)
+    
     AccelerationY = KraftY/Massa
     AccelerationX = KraftX/Massa
-    Hx2 = Hx1 + AccelerationX*Delta_t 
-    Hy2 = Hy1 + AccelerationY*Delta_t
+    Hy2 = Hy1 + AccelerationY*Delta_t 
+    Hx2 = Hx1 + AccelerationX*Delta_t
     Acceleration = math.sqrt(AccelerationY*AccelerationY + AccelerationX*AccelerationX)
-    Hastighet2 = Hastighet1 + Acceleration*Delta_t
-    print(Hastighet2) 
-    Vinkelhastighet2 = Vinkelhastighet1 + Hastighet1*(1/Radie)
+    Hastighet2 = math.sqrt(Hx2*Hx2 + Hy2*Hy2)
+    VinkelHastighet2 = VinkelHastighet1 + Hastighet1*(1/Radie)
     Position2 = Position1 + Hastighet2*Delta_t
-    Vinkeln2 = np.arctan(Hastighet2*math.cos(Vinkeln1)/(Hastighet2*math.sin(Vinkeln1)))
+    Px = Position2*np.cos(Vinkeln1)
+    Py = Position2*np.sin(Vinkeln1)
+    print(Py)
+    Vinkeln2 = np.arctan((Hx2/(Hy2)))
+    
 # Förberedelser
+
+    Fm = 2*Densitet*VinkelHastighet1*(Hastighet2-Hastighet1)*math.pi*Radie*Radie*Radie
+    
     Hastighet1 = Hastighet2
     Position1 = Position2
-    Vinkeln2 = Vinkeln1
-    Vinkelhastighet1 = Vinkelhastighet2
-    if(n == 300):
+    Vinkeln1 = Vinkeln2
+    Hx1 = Hx2
+    Hy1 = Hy2
+    VinkelHastighet1 = VinkelHastighet2
+    if(n == 250):
         break
-print("Dope")
-print(Hastighet1)
-print(Vinkeln2)
-
