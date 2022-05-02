@@ -4,21 +4,22 @@ import math
 import numpy as np
 
 #Värden
-
-Vinkeln1 = 1
+tid = 0
+Vinkeln1 = math.pi/4
 Vinkeln2 = 0
 Massa = 0.04593
 Position1 = 0
-Position2 = 0
-Px = 0
-Py = 0
-Hastighet1 = 5
-Hastighet2 = 5
+Px1 = Position1*math.cos(Vinkeln1)
+Px2 = Position1*math.sin(Vinkeln1)
+Py1 = 0
+Py2 = 0
+Hastighet1 = 30
+Hastighet2 = 30
 Hx1 = Hastighet1*math.cos(Vinkeln1)
 Hx2 = 0
 Hy1 = Hastighet1*math.sin(Vinkeln1) 
 Hy2 = 0
-VinkelHastighet1 = 0
+VinkelHastighet1 = 3
 VinkelHastighet2 = 0
 Acceleration = 0
 AccelerationY = 0
@@ -26,7 +27,7 @@ AccelerationX = 0
 Densitet = 1.225
 Diametern = 0.04267
 Radie = Diametern/2
-Delta_t = 0.1
+Delta_t = 0.05
 Area = 4*math.pi*Radie*Radie
 Fg = Massa*9.82
 Fd = 0
@@ -40,11 +41,11 @@ Statiska_trycket = 0
 
 while(True):
     n += 1
-    Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5 + Statiska_trycket
+    #Dynamiskt_tryck = Densitet*(Hastighet1*Hastighet1)*0.5 + Statiska_trycket
     Fd = kd*(Hastighet1*Hastighet1)  
-   
-    KraftY = Fg*math.sin(Vinkeln1)+Fd*math.sin(Vinkeln1)+Fm*math.sin(Vinkeln1)
-    KraftX = Fd*math.cos(Vinkeln1)
+    Fm = 2*Densitet*VinkelHastighet1*Hastighet1*math.pi*Radie*Radie*Radie
+    KraftY = -Fg-Fd*math.sin(Vinkeln1)+Fm
+    KraftX = -Fd*math.cos(Vinkeln1)
     
     AccelerationY = KraftY/Massa
     AccelerationX = KraftX/Massa
@@ -52,22 +53,24 @@ while(True):
     Hx2 = Hx1 + AccelerationX*Delta_t
     Acceleration = math.sqrt(AccelerationY*AccelerationY + AccelerationX*AccelerationX)
     Hastighet2 = math.sqrt(Hx2*Hx2 + Hy2*Hy2)
-    VinkelHastighet2 = VinkelHastighet1 + Hastighet1*(1/Radie)
-    Position2 = Position1 + Hastighet2*Delta_t
-    Px = Position2*np.cos(Vinkeln1)
-    Py = Position2*np.sin(Vinkeln1)
-    print(Py)
+    
+    #X och Y
+    Px2 = Px1 + Hx2*Delta_t
+    Py2 = Py1 + Hy2*Delta_t
+    Position = math.sqrt(Px2*Px2 + Py2*Py2)
+    tid += Delta_t
+    #print(Py1)
+    print(tid)
+    print(",")
     Vinkeln2 = np.arctan((Hx2/(Hy2)))
     
 # Förberedelser
-
-    Fm = 2*Densitet*VinkelHastighet1*(Hastighet2-Hastighet1)*math.pi*Radie*Radie*Radie
     
     Hastighet1 = Hastighet2
-    Position1 = Position2
     Vinkeln1 = Vinkeln2
     Hx1 = Hx2
     Hy1 = Hy2
-    VinkelHastighet1 = VinkelHastighet2
-    if(n == 250):
+    Px1 = Px2
+    Py1 = Py2
+    if(Py2 < 0):
         break
